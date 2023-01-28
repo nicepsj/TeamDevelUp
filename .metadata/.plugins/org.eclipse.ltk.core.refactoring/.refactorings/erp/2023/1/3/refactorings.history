@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;LoginCheckInterceptor.java&apos; to &apos;DevelUp/src/main/java/com.multi.ongo.common&apos;&#x0D;&#x0A;- Original project: &apos;erp&apos;&#x0D;&#x0A;- Destination element: &apos;DevelUp/src/main/java/com.multi.ongo.common&apos;&#x0D;&#x0A;- Original element: &apos;com.multi.erp.common.LoginCheckInterceptor.java&apos;" description="Copy compilation unit" destination="=DevelUp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.multi.ongo.common" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.multi.erp.common{LoginCheckInterceptor.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1674219841338" units="1" version="1.0"/>
+</session>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.multi.ongo.deal">
+	
+	<!-- 조회수 -->
+	<update id="hits_update" parameterType="int">
+		update deal_table2
+		set hits = hits+1
+		where deal_number = #{deal_number}
+	</update> 
+	
+	
+	<!--중고거래_등록   -->
+	<insert id="deal_write" parameterType="dealDTO">
+		insert into deal_table2
+		values(deal_no2.nextval, #{member_id}, #{dealType}, #{product_category}, 
+		'판매중', #{board_title}, #{product_price}, #{board_content}, 0, sysdate, 0)
+	</insert>
+	
+	<!--중고거래 게시글_전체조회  -->
+	<select id="selectAll" resultType="dealDTO">
+		select * from deal_table2
+		order by write_date desc
+		
+	</select>
+	
+	<!--중고거래 거래타입 검색  -->
+	<select id="dealTypeSearch" resultType="dealDTO" parameterType="String">
+		select * from deal_table2
+		where dealType = #{dealType}
+		order by write_date desc
+	</select>
+	
+	<!--조인한 결과로 중고거래 게시글 타입별 조회  **************************-->
+	<select id="dealTotalList" resultType="dealtotalDTO">
+		select a.*, b.*
+		from deal_table2 a left outer join deal_file b
+		on (a.deal_number=b.deal_number)
+		order by a.write_date desc
+	</select>
+	<!-- 리스트3 -->
+	<select id="dealTotalList2" resultType="dealtotalDTO" parameterType="String"> 
+		select a.*, b.*
+		from deal_table2 a left outer join deal_file b 
+		on (a.deal_number=b.deal_number)
+		where dealType = #{dealType}		
+		order by a.write_date desc
+	</select>
+	
+	
+	
+	
+	
+	
+	<!--중고거래 게시글_ 읽기-->
+	<select id="dealRead" resultType="dealDTO" parameterType="int">
+		select * from deal_table2
+		where deal_number=#{deal_number}
+	</select>
+	
+	
+	<!--중고거래 게시글_삭제  -->
+	<delete id="dealDelete" parameterType="int">
+		delete from deal_table2 
+		where deal_number=#{deal_number}
+	</delete>
+		
+	<!-- 하단검색 -->
+	<select id="searchData" parameterType="Map" resultType="dealtotalDTO">
+		select a.*, b.*
+		from deal_table2 a left outer join deal_file b 
+		on (a.deal_number=b.deal_number)
+		<where>
+			<if test="tag == 'board_title' and searchData != ''">
+				board_title like '%' || #{searchData} || '%'
+			</if>
+			<if test="tag == 'member_id' and searchData != ''">
+				member_id like '%' || #{searchData} || '%'
+			</if>
+			<if test="tag == 'write_date' and searchData != ''">
+				 <![CDATA[
+					write_date <= #{searchData} 
+				]]> 
+			</if>
+			<if test="tag == 'board_title' and searchData == ''">
+				1=1
+			</if>
+			<if test="tag == 'member_id' and searchData == ''">
+				1=1
+			</if>
+			<if test="tag == 'write_date' and searchData == ''">
+				1=1			
+			</if> 
+		</where>
+		order by a.write_date desc
+		
+	</select>
+	
+	<!--//메인화면 거래배너리스트  -->
+	<select id="main_dealcategory"  resultType="dealDTO" parameterType="String">
+		select board_title,
+		       write_date
+ 		 from (
+		       select board_title,
+		       write_date,
+               DENSE_RANK() OVER(ORDER BY write_date DESC) as rnk
+          	   FROM deal_table2
+		       )
+		       <![CDATA[
+		       where rnk <= 3;
+				]]>  
+	</select>
+	
+	
+	<!-- 첨부파일목록 -->
+	<select id="getFileList" parameterType="int" resultType="fileDTO">
+		select * from deal_file 
+		where deal_number = #{deal_number}
+	</select>
+	
+	
+	<!-- 첨부파일등록 (파라미터타입 주의!! )-->
+	<insert id="insertFile" parameterType="java.util.List">
+		insert all
+		<!-- collection : List사용했으니 list, Array사용했다면 array, 저장명을 별도사용했다면 저장명, 향상된for문처럼...  collection에 저장된걸 item에서 하나씩 꺼내어 저장  -->
+		<!-- separator into 와 into사이 구분을 위한 띄워쓰기 -->
+			<foreach collection="list" item="file" separator=" ">
+				into deal_file values(deal_no2.currval, #{file.originalFilename}, 0, #{file.dealFile_number})
+			</foreach>
+		select * from dual
+	</insert>
+	<!-- 원래사용하려했던 예시
+	insert all
+		into 테이블명 values('컬럼1내용', '컬럼2내용'...)
+	    into 테이블명 values('컬럼1내용', '컬럼2내용'...)
+   		 ...
+	select * from dual;
+	 -->
+	
+	<!--중고거래 게시글 수정(일반폼수정)-->
+	<update id="dealUpdate" parameterType="dealDTO">
+		update deal_table2
+		set dealType=#{dealType}, product_category=#{product_category}, board_title=#{board_title},  product_price=#{product_price}, board_content=#{board_content}
+		where deal_number = #{deal_number}
+	</update>
+	
+	<!--중고거래 게시글 수정(첨부파일수정)-->
+	<update id="updateFile" parameterType="java.util.List">
+		update deal_table2
+		<foreach collection="list" item="file" >
+				set originalFilename = #{file.originalFilename}, 0, dealFile_number = #{file.dealFile_number})
+		</foreach>
+		where deal_number = #{deal_number}
+	</update>
+	
+	
+	
+		<!-- 첨부파일 가져오기(다운로드) -->
+	<select id="getFile" parameterType="Map" resultType="fileDTO">
+		select * from deal_file
+		where deal_number=#{deal_number} and dealFile_number=#{dealFile_number}
+	</select>
+	
+	
+	
+  </mapper>

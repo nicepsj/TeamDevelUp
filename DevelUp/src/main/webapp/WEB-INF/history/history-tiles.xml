@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+     "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+       
+ <tiles-definitions>
+ 
+	<!-- 사이드 메뉴 레이아웃 템플릿 -->
+	<definition name="menuTemplate" template="/WEB-INF/history/menuLayout.jsp">
+ 		<put-attribute name="top" value="/WEB-INF/include/top.jsp"></put-attribute>
+ 		<put-attribute name="menu" value="/WEB-INF/history/myongo_menu.jsp"></put-attribute>
+ 		<put-attribute name="content" value="/WEB-INF/history/myongo.jsp"></put-attribute>
+ 		<put-attribute name="footer" value="/WEB-INF/include/footer.jsp"></put-attribute>
+ 	</definition>
+ 	
+	<!-- 나의 온고 첫화면 -->
+	<definition name="history/myongo" extends="menuTemplate"></definition>
+ 	
+ 	
+ 	<!-- 중고거래 판매관리 페이지 -->
+	<definition name="history/dealsellList" extends="indexTemplate">
+ 		<put-attribute name="content" value="/WEB-INF/history/dealsellList_ver4.jsp"></put-attribute>
+ 	</definition> 	
+ 	
+ 	<!-- 중고거래 구매관리 페이지 -->
+	<definition name="history/dealbuyList" extends="indexTemplate">
+ 		<put-attribute name="content" value="/WEB-INF/history/dealbuyList.jsp"></put-attribute>
+ 	</definition> 	
+ 	
+ 	<!-- 중고거래 구매요청 완료 안내 페이지 -->
+ 	<definition name="history/dealRequestChk" extends="indexTemplate">
+ 		<put-attribute name="content" value="/WEB-INF/history/dealRequestChk.jsp"></put-attribute>
+ 	</definition> 	
+ 	
+ 	
+ </tiles-definitions>

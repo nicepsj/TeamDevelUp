@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--  Mybatis 연동을 통하여 Oracle 데이터를 스프링 프로젝트를 사용하기 위함. -->
+	<typeAliases>
+		<typeAlias type="com.multi.ongo.member.MemberDTO" alias="memberP"/>
+		<typeAlias type="com.multi.ongo.deal.DealBoard_DTO" alias="dealDTO"/>
+		<typeAlias type="com.multi.ongo.deal.DealFile_DTO" alias="fileDTO"/>
+		<typeAlias type="com.multi.ongo.deal.DealTotalList_DTO" alias="dealtotalDTO"/>
+		<typeAlias type="com.multi.ongo.note.NoteDTO" alias="note"/>
+		<typeAlias type="com.multi.ongo.history.DealRequestDTO" alias="dealReqDTO"/>
+		<typeAlias type="com.multi.ongo.auction.AuctionBoard_DTO" alias="auctionDTO"/>
+		<typeAlias type="com.multi.ongo.auction.AuctionBoardUpFile_DTO" alias="boardfile"/>
+		<typeAlias type="com.multi.ongo.cooperation.CooperationDTO" alias="cooperDTO"/>
+		<typeAlias type="com.multi.ongo.recycle.RecycleDTO" alias="recycleDTO"/>
+		<typeAlias type="com.multi.ongo.payment.PaymentDTO" alias="payDTO"/>
+		<typeAlias type="com.multi.ongo.payment.PayTotalDTO" alias="paytotalDTO"/>
+
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mapper/member.xml"/>
+		<mapper resource="mapper/deal.xml"/>
+		<mapper resource="mapper/deal2.xml"/>
+		<mapper resource="mapper/note.xml"/>
+		<mapper resource="mapper/dealrequest.xml"/>
+		<mapper resource="mapper/auction.xml"/>
+		<mapper resource="mapper/auction2.xml"/>
+		<mapper resource="mapper/cooperation.xml"/>
+		<mapper resource="mapper/recycle.xml"/>
+		<mapper resource="mapper/payment.xml"/>
+	</mappers>
+</configuration>
